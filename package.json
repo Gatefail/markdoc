@@ -3,16 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "@bazel/bazelisk": "^1.3.0",
+    "@bazel/bazelisk": "^1.4.0",
     "@bazel/buildifier": "^2.2.1",
-    "@bazel/ibazel": "^0.12.3",
-    "@bazel/typescript": "^1.4.1",
-    "prettier": "^2.0.2",
+    "@bazel/ibazel": "^0.12.4",
+    "@bazel/typescript": "^1.6.0",
+    "prettier": "^2.0.4",
     "typescript": "^3.8.3"
   },
   "scripts": {
-    "build": "bazelisk build //...",
-    "test": "bazelisk test //...",
+    "build": "bazel build //...",
+    "test": "bazel test //...",
     "bazel:format": "find . -type f \\( -name \"*.bzl\" -or -name WORKSPACE -or -name BUILD -or -name BUILD.bazel \\) ! -path \"*/node_modules/*\" ! -path \"./dist/*\" ! -path \"./release/*\" ! -path \"./third_party/*\" | xargs buildifier -v --warnings=attr-cfg,attr-license,attr-non-empty,attr-output-default,attr-single-file,confusing-name,constant-glob,ctx-actions,ctx-args,depset-iteration,depset-union,dict-concatenation,duplicated-name,filetype,function-docstring,git-repository,http-archive,integer-division,load,load-on-top,module-docstring,name-conventions,native-build,native-package,out-of-order-load,output-group,package-name,package-on-top,positional-args,redefined-variable,repository-name,return-value,same-origin-load,string-iteration,unreachable,unsorted-dict-items,unused-variable",
     "bazel:format-check": "yarn bazel:format --mode=check",
     "bazel:lint": "yarn bazel:format --lint=warn",
