@@ -1,11 +1,28 @@
 load("@npm_bazel_typescript//:index.bzl", "ts_library")
+load("@npm_bazel_rollup//:index.bzl", "rollup_bundle")
 
 package(default_visibility = ["//:__subpackages__"])
 
 ts_library(
     name = "src",
     srcs = glob(
-        ["*.ts"],
-        exclude = ["*.test.ts"],
-    )
+        ["*.ts", "*.tsx"],
+        exclude = ["*.test.ts", "*.test.tsx"],
+    ),
+    deps = [
+      "@npm//react",
+      "@npm//react-dom",
+      "@npm//@types"
+    ]
+)
+
+rollup_bundle(
+    name = "bundle",
+    config_file = "rollup.config.js",
+    entry_point = ":index.tsx",
+    deps = [
+        ":src",
+        "@npm//@rollup/plugin-commonjs",
+        "@npm//@rollup/plugin-node-resolve",
+    ],
 )
