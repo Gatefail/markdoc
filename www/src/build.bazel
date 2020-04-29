@@ -1,4 +1,4 @@
-load("@npm_bazel_typescript//:index.bzl", "ts_library")
+load("@npm_bazel_typescript//:index.bzl", "ts_library", "ts_devserver")
 load("@npm_bazel_rollup//:index.bzl", "rollup_bundle")
 
 package(default_visibility = ["//:__subpackages__"])
@@ -14,6 +14,12 @@ ts_library(
       "@npm//react-dom",
       "@npm//@types"
     ]
+)
+
+ts_devserver(
+    name = "devserver",
+    deps = [":src"]
+
 )
 
 rollup_bundle(
