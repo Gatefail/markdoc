@@ -1,5 +1,6 @@
-load("@npm_bazel_typescript//:index.bzl", "ts_library", "ts_devserver")
+load("@npm//html-insert-assets:index.bzl", "html_insert_assets")
 load("@npm_bazel_rollup//:index.bzl", "rollup_bundle")
+load("@npm_bazel_typescript//:index.bzl", "ts_devserver", "ts_library")
 
 package(default_visibility = ["//:__subpackages__"])
 
@@ -10,16 +11,35 @@ ts_library(
         exclude = ["*.test.ts", "*.test.tsx"],
     ),
     deps = [
-      "@npm//react",
-      "@npm//react-dom",
-      "@npm//@types"
-    ]
+        "@npm//@types",
+        "@npm//react",
+        "@npm//react-dom",
+    ],
+)
+
+html_insert_assets(
+    name = "inject_scripts_for_dev",
+    outs = ["index.html"],
+    args = [
+        "--html=$(execpath :index.tmpl.html)",
+        "--out=$@",
+        "--roots=. $(RULEDIR)",
+    ],
+    data = [":index.tmpl.html"],
 )
 
 ts_devserver(
     name = "devserver",
-    deps = [":src"]
-
+    entry_module = "markdoc/www/src/index.tsx",
+    port = 8080,
+    static_files = [
+        ":inject_scripts_for_dev",
+    ],
+    deps = [
+        ":src",
+        "@npm//react:react__umd",
+        "@npm//react-dom:react-dom__umd",
+    ],
 )
 
 rollup_bundle(
